@@ -1,5 +1,15 @@
 package kz.dasm.telegramalertingsystem.handler;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import com.alibaba.fastjson.JSON;
+
+import kz.dasm.telegramalertingsystem.api.TelegramApi;
+import kz.dasm.telegramalertingsystem.db.DataBase;
+import kz.dasm.telegramalertingsystem.models.Response;
+
 public class TelegramGetter {
 
     public TelegramGetter() {
@@ -11,7 +21,7 @@ public class TelegramGetter {
      * обновления в телеграме.
      */
     public void start() {
-        TelegramAPI telegram = new TelegramAPI();
+        TelegramApi telegram = new TelegramApi();
         String responseString = telegram.getUpdates();
 
         /**
