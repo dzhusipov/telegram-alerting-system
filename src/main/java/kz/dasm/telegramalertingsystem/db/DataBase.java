@@ -11,6 +11,11 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
+
 /**
  *
  * @author DAsm Класс БД. Используем мааааааааааленькую sqlite БД =)
@@ -54,8 +59,10 @@ import java.util.logging.Logger;
  */
 public class DataBase {
 
+
     private static final String DB_NAME = "telegram_bot.db";
-    private static final String CLASS4NAME = "org.sqlite.JDBC";
+    
+    private final String CLASS4NAME = "org.sqlite.JDBC";
     private Connection connection;
     private static final String TBL_CONFIG = "config";
     private static final String TBL_CHAT_EVENTS = "chat_events";
@@ -66,7 +73,8 @@ public class DataBase {
     /*
     *   Инициализируем подключение к БД сразу.
      */
-    public DataBase() {
+    public DataBase( ) {
+
         this.connect();
     }
 
@@ -74,7 +82,6 @@ public class DataBase {
      * connect(). Коннектимся к БД.
      */
     private void connect() {
-
         try {
             Class.forName(CLASS4NAME);
             connection = DriverManager.getConnection("jdbc:sqlite:" + DB_NAME);

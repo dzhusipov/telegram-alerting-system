@@ -18,6 +18,7 @@ dependencies {
 	implementation 'com.alibaba:fastjson:1.2.79'
 	implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
 	implementation 'org.xerial:sqlite-jdbc:3.36.0.3'
+	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 }
 
 tasks.named('test') {
