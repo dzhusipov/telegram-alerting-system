@@ -6,10 +6,13 @@ import java.util.logging.Logger;
 
 import com.alibaba.fastjson.JSON;
 
+import org.springframework.stereotype.Component;
+
 import kz.dasm.telegramalertingsystem.api.TelegramApi;
 import kz.dasm.telegramalertingsystem.db.DataBase;
 import kz.dasm.telegramalertingsystem.models.Response;
 
+@Component
 public class TelegramGetter {
 
     public TelegramGetter() {
@@ -20,7 +23,7 @@ public class TelegramGetter {
      * void start(). Стартуем! У меня джип в Москве! Метод начинает получать
      * обновления в телеграме.
      */
-    public void start() {
+    public void run() {
         TelegramApi telegram = new TelegramApi();
         String responseString = telegram.getUpdates();
 
