@@ -312,8 +312,7 @@ public class TelegramApi {
             db.closeConnection();
             // this.disableProxy();
         } catch (IOException e) {
-            System.out.println("DAsm: Error in TelegramApi getUpdates: " + System.getProperty("http.proxyHost")
-                    + System.getProperty("https.proxyHost"));
+            System.out.println("In many times this error was because of corporate proxy");
             System.out.println(ERROR);
             System.out.println(e);
             result = null;
