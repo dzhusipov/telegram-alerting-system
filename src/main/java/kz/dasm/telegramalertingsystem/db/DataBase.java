@@ -54,7 +54,7 @@ import java.util.logging.Logger;
  */
 public class DataBase {
 
-    private static final String DB_NAME = "PATH/TO/SQLITEDB/telegram_bot.db";
+    private static final String DB_NAME = "telegram_bot.db";
     private static final String CLASS4NAME = "org.sqlite.JDBC";
     private Connection connection;
     private static final String TBL_CONFIG = "config";
