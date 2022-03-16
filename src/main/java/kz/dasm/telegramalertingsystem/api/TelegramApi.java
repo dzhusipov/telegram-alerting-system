@@ -42,7 +42,7 @@ public class TelegramApi {
      * Не дай бог изменишь или воспользуешься им для плохих целей, я тебя найду
      * и заставлю кушать мою стряпню!
      */
-    private static final String BOT_TOKEN = "BOT_TOKEN";
+    private static final String BOT_TOKEN = "5262848674:AAENA77QSDpZl5xslRcR4fO9ngEhuAmjSoY";
     /*------------------------------------------------------------------------------------------*/
     private static final String URL = TELEGRAM_API_HOSTNAME + BOT_TOKEN + "/";
     private static final String CHARSET = "utf-8";
