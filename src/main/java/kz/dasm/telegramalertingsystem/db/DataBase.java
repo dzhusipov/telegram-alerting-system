@@ -325,7 +325,7 @@ public class DataBase {
      */
     public List<Long> getAllChatsToBroadcastMessage() {
         List<Long> chats = new ArrayList<>();
-        
+
         try {
             Statement stmt = connection.createStatement();
             String sql = "select distinct(chat_id) from ( select distinct (chat_id) from " + TBL_CHAT_EMAILS + " union select distinct (chat_id) from " + TBL_CHAT_EVENTS + ") t";  

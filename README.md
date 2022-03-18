@@ -6,8 +6,13 @@ To run application you can
 ```sh
  ./gradlew bootRun
 ```
-ro build jar you can run it with
+To build jar you can run
 
 ```sh
-java -jar build/libs/telegram-alerting-system-0.1.0.jar
+ ./gradlew bootJar
 ```
+-Dhttp.proxyHost=webcache.mydomain.com 
+-Dhttp.proxyPort=8080
+-Dhttp.noProxyHosts=”localhost|host.mydomain.com” GetURL
+-Dhttp.proxyUser=USERNAME
+-Dhttp.proxyPassword=PASSWORD

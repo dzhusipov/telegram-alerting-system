@@ -34,8 +34,8 @@ import java.util.List;
 
 public class TelegramApi {
 
-    private static final String PROXY_HOST = "proxy.com"; // прокся для корпоративщиков
-    private static final int PROXY_PORT = 8000; // порт прокси для корпоративщиков
+    //private static final String PROXY_HOST = "proxy-all"; // прокся для корпоративщиков
+    //private static final int PROXY_PORT = 8000; // порт прокси для корпоративщиков
     private static final String TELEGRAM_API_HOSTNAME = "https://api.telegram.org/bot";
     /*------------------------------------------------------------------------------------------*
      * Токен бота. Зная его, можно управлять им.
@@ -55,7 +55,7 @@ public class TelegramApi {
     private static final String SEND_MESSAGE = "sendMessage";
     // private static final String SEND_STICKER = "sendSticker";
 
-    private static final Proxy PROXY = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, PROXY_PORT));
+    //private static final Proxy PROXY = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, PROXY_PORT));
     private static final String GRAFANA_TOKEN = "GRAFANA_TOKEN";
     private static final String AUTH_TYPE = "Bearer ";
     private static final String SEND_PHOTO = "sendPhoto";
@@ -378,7 +378,7 @@ public class TelegramApi {
 
         try {
 
-            UploadSentPhoto uploadPhoto = new UploadSentPhoto(URL + SEND_PHOTO, CHARSET, PROXY);
+            UploadSentPhoto uploadPhoto = new UploadSentPhoto(URL + SEND_PHOTO, CHARSET);
             uploadPhoto.addHeaderField("User-Agent", "CodeJavaTelegramBot");
             uploadPhoto.addHeaderField("Telegram-Header", "Header-Value");
             uploadPhoto.addFormField("chat_id", String.valueOf(chat_id));

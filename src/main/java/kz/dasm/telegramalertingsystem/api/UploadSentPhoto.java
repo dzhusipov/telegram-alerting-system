@@ -37,7 +37,7 @@ public class UploadSentPhoto {
      * @param charset
      * @throws IOException
      */
-    public UploadSentPhoto(String requestURL, String charset, Proxy proxy)
+    public UploadSentPhoto(String requestURL, String charset)
             throws IOException {
         this.charset = charset;
 
@@ -45,7 +45,7 @@ public class UploadSentPhoto {
         boundary = "===" + System.currentTimeMillis() + "===";
 
         URL url = new URL(requestURL);
-        httpConn = (HttpURLConnection) url.openConnection(proxy);
+        httpConn = (HttpURLConnection) url.openConnection();
         httpConn.setUseCaches(false);
         httpConn.setDoOutput(true); // indicates POST method
         httpConn.setDoInput(true);
