@@ -19,3 +19,6 @@ this proxies if you need to use them. hust put wher you run java -jar build/libs
 -Dhttp.noProxyHosts=”localhost|host.mydomain.com” GetURL
 -Dhttp.proxyUser=USERNAME
 -Dhttp.proxyPassword=PASSWORD
+
+
+Need to make REstfull serevice 
