@@ -13,20 +13,13 @@ repositories {
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'com.alibaba:fastjson:1.2.79'
 	implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
-	implementation 'org.xerial:sqlite-jdbc:3.36.0.3'
-	annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
-	implementation 'org.springframework:spring-web:5.3.16'
-	implementation 'org.springframework.boot:spring-boot-starter-tomcat:2.6.4'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
-}
-
-tasks.jar {
-    manifest.attributes["Main-Class"] = "TelegramAlertingSystemApplication"
 }
