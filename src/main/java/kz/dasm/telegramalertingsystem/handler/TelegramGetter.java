@@ -15,6 +15,8 @@ import kz.dasm.telegramalertingsystem.models.Response;
 @Component
 public class TelegramGetter {
 
+    private static Logger log = Logger.getLogger(TelegramGetter.class.getName());
+
     public TelegramGetter() {
 
     }
@@ -33,9 +35,8 @@ public class TelegramGetter {
          * покрывать.
          */
         if (responseString != null) {
-
             if (!responseString.substring(0, 1).equalsIgnoreCase("{")) {
-                System.out.println("Response: " + responseString);
+                log.info("Response: " + responseString);
                 return;
             }
 
