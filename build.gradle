@@ -17,7 +17,7 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation 'com.alibaba:fastjson:1.2.79'
-	implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
+	implementation 'com.sun.mail:javax.mail:1.6.2'
 }
 
 tasks.named('test') {
