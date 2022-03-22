@@ -53,7 +53,7 @@ public class TelegramGetter {
                     if (result_count > 0) {
                         for (int i = 0; i < result_count; i++) {
                             try {
-                                System.out.println("responseString " + responseString);
+                                log.info("responseString " + responseString);
                                 if (responseObject.getResult()[i].getMessage() != null) {
                                     systemComands.analyzeText(responseObject.getResult()[i].getMessage().getText(), responseObject, i);
                                 }
@@ -63,7 +63,7 @@ public class TelegramGetter {
                             db.updateOffset(String.valueOf(responseObject.getResult()[i].getUpdate_id() + 1));
                         }
                     } else {
-                        //System.out.println("No updates");
+                        //log.info("No updates");
                     }
                 }
                 db.closeConnection();

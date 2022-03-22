@@ -7,11 +7,15 @@ import kz.dasm.telegramalertingsystem.auth.Authorizator;
 import kz.dasm.telegramalertingsystem.db.DataBase;
 import kz.dasm.telegramalertingsystem.models.Response;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Logger;
 
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
 public class SystemCommand {
+    //Logger
+    private static Logger log = Logger.getLogger(SystemCommand.class.getName());
+
     private int getRandCode() {
         int randomNum = (ThreadLocalRandom.current().nextInt(3, 8 + 1)) * 1000;
         randomNum = randomNum + ((ThreadLocalRandom.current().nextInt(3, 8 + 1)) * 100);
@@ -41,7 +45,7 @@ public class SystemCommand {
     }
 
     private boolean check_email(String email) {
-        System.out.println(email);
+        log.info(email);
         if (!isValidEmailAddress(email)) {
             return false;
         }
@@ -102,13 +106,13 @@ public class SystemCommand {
      * @throws java.io.IOException
      */
     public void analyzeText(String text, Response resp, int index) throws IOException {
-        System.out.println(text); // смотри что прислали
+        log.info(text); // смотри что прислали
         DataBase db = new DataBase();
 
         long chat_id = resp.getResult()[index].getMessage().getChat().getId();
         TelegramApi telegramAPI = new TelegramApi();
         this.updateChatTitles(resp, index);
-        System.out.println(getCommand(text));
+        log.info(getCommand(text));
         if (getCommand(text).equalsIgnoreCase("/email")) {
             if (!getCommandArg(text).equalsIgnoreCase("NoTextError") && check_email(getCommandArg(text)) && !getCommandArg(text).contains(" ")) {
                 this.send_email(getCommandArg(text), chat_id);

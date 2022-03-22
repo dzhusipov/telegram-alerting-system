@@ -13,6 +13,9 @@ import javax.mail.internet.MimeMessage;
 
 
 public class SendEmail {
+    //Logger
+    private static Logger log = Logger.getLogger(SendEmail.class.getName());
+
     private static final String EMAIL_FROM = "telegram-bot@YOUR_COMPANY_DOMAIN.COM";
     private static final String EMAIL_HOST = "SMTP_SERVER";
     private static final String EMAIL_SUBJECT = "Код доступа для telegram оповещений.";
@@ -37,7 +40,7 @@ public class SendEmail {
             message.setText(text);
             Transport.send(message);
         } catch (MessagingException mex) {
-            System.out.println("DAsm: Error in SendMail: " + System.getProperty("http.proxyHost") + System.getProperty("https.proxyHost"));
+            log.info("DAsm: Error in SendMail: " + System.getProperty("http.proxyHost") + System.getProperty("https.proxyHost"));
             Logger.getLogger(SendEmail.class.getName()).log(Level.SEVERE, null, mex);
         }
     }

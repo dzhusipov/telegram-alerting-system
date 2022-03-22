@@ -55,7 +55,8 @@ import java.util.logging.Logger;
  */
 public class DataBase {
 
-
+    //logger
+    private static Logger log = Logger.getLogger(DataBase.class.getName());
     private static final String DB_NAME = "telegram_bot.db";
     
     private final String CLASS4NAME = "org.sqlite.JDBC";
@@ -493,7 +494,7 @@ public class DataBase {
                 this.connection.close();
             }
         } catch (SQLException ex) {
-            System.out.println("closeConnection");
+            log.info("closeConnection");
             Logger.getLogger(DataBase.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
@@ -512,7 +513,7 @@ public class DataBase {
         String sql = "";
         if (isEmail){
             sql = "SELECT chat_id FROM " + TBL_CHAT_EMAILS + " WHERE '" + name.toUpperCase().replaceAll("[']", "''").replace("  ", " ") + "' like '%' || name || '%';";
-            System.out.println("sql: " + sql);
+            log.info("sql: " + sql);
         }else{
             sql = "SELECT chat_id FROM " + TBL_CHAT_EVENTS + " WHERE name = '" + name.toUpperCase() + "';";
         }

@@ -16,11 +16,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
+//import java.net.InetSocketAddress;
+//import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
+//import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -33,7 +35,8 @@ import java.util.List;
  */
 
 public class TelegramApi {
-
+    //Logger
+    private static Logger log = Logger.getLogger(TelegramApi.class.getName());
     //private static final String PROXY_HOST = "proxy-all"; // прокся для корпоративщиков
     //private static final int PROXY_PORT = 8000; // порт прокси для корпоративщиков
     private static final String TELEGRAM_API_HOSTNAME = "https://api.telegram.org/bot";
@@ -121,11 +124,11 @@ public class TelegramApi {
          * result = sb.toString();
          * 
          * } catch (IOException e) {
-         * System.out.println("DAsm: Error in TelegramApi sendSticker: " +
+         * log.info("DAsm: Error in TelegramApi sendSticker: " +
          * System.getProperty("http.proxyHost") +
          * System.getProperty("https.proxyHost"));
-         * System.out.println(ERROR);
-         * System.out.println(e);
+         * log.info(ERROR);
+         * log.info(e);
          * result = null;
          * }
          */
@@ -172,9 +175,9 @@ public class TelegramApi {
             sendMessageObj.setChat_id(chat_id);
             sendMessageObj.setText(text_message);
             // sendMessageObj.setParse_mode(parse_mode);
-            System.out.println(text_message); // отправленные сообщения смотрим.
+            log.info(text_message); // отправленные сообщения смотрим.
             String json_text = JSON.toJSONString(sendMessageObj);
-            System.out.println(json_text); // режим парсинга.
+            log.info(json_text); // режим парсинга.
             byte[] buffer = new byte[json_text.length()];
             buffer = json_text.getBytes();
             bout.write(buffer);
@@ -228,13 +231,12 @@ public class TelegramApi {
              */
             result = sb.toString();
 
-            System.out.println("------------------- " + result);
+            log.info("Result: " + result);
             // this.disableProxy();
         } catch (IOException e) {
-            System.out.println("DAsm: Error in TelegramApi sendMessage: " + System.getProperty("http.proxyHost")
+            log.info("DAsm: Error in TelegramApi sendMessage: " + System.getProperty("http.proxyHost")
                     + System.getProperty("https.proxyHost"));
-            System.out.println(ERROR);
-            System.out.println(e);
+            log.info(ERROR);
             result = null;
             // this.disableProxy();
         }
@@ -312,9 +314,8 @@ public class TelegramApi {
             db.closeConnection();
             // this.disableProxy();
         } catch (IOException e) {
-            System.out.println("In many times this error was because of corporate proxy");
-            System.out.println(ERROR);
-            System.out.println(e);
+            log.info("In many times this error was because of corporate proxy");
+            log.info(ERROR);
             result = null;
             // this.disableProxy();
         }
@@ -342,13 +343,12 @@ public class TelegramApi {
             httpConn.setDoInput(true);
             httpConn.connect();
             // int responseCode= httpConn.getResponseCode();
-            // System.out.println("Response code:-" + responseCode);
+            // log.info("Response code:-" + responseCode);
             inputSrtm = httpConn.getInputStream();
         } catch (Exception e) {
-            System.out.println("Rava: Error in TelegramAPI getPhotoToSendGrafana: "
+            log.info("Rava: Error in TelegramAPI getPhotoToSendGrafana: "
                     + System.getProperty("http.proxyHost") + System.getProperty("https.proxyHost"));
-            System.out.println(ERROR);
-            System.out.println(e);
+            log.info(ERROR);
             inputSrtm = null;
         }
         return inputSrtm;
@@ -403,17 +403,16 @@ public class TelegramApi {
             }
 
             List<String> response = uploadPhoto.finish();
-            // System.out.println("TELEGRAM SERVER REPLIED:");
+            // log.info("TELEGRAM SERVER REPLIED:");
             for (String line : response) {
-                // System.out.println(line);
+                // log.info(line);
                 result.concat(line);
             }
 
         } catch (IOException e) {
-            System.out.println("Error in TelegramAPI sendPhoto: " + System.getProperty("http.proxyHost")
+            log.info("Error in TelegramAPI sendPhoto: " + System.getProperty("http.proxyHost")
                     + System.getProperty("https.proxyHost"));
-            System.out.println(ERROR);
-            System.out.println(e);
+            log.info(ERROR);
             result = null;
         }
         return result;
