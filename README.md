@@ -12,21 +12,27 @@ To build jar you can run
  ./gradlew bootJar
 ```
 
-this proxies if you need to use them. hust put wher you run java -jar build/libs/telegram-alerting-system-0.0.1-SNAPSHOT.jar  
+this proxies if you need to use them. Just run with
+```
+java -jar build/libs/telegram-alerting-system-0.0.1-SNAPSHOT.jar  
+```
 
--Dhttp.proxyHost=webcache.mydomain.com 
--Dhttp.proxyPort=8080
--Dhttp.noProxyHosts=”localhost|host.mydomain.com” GetURL
--Dhttp.proxyUser=USERNAME
--Dhttp.proxyPassword=PASSWORD
+## Proxy settings
+-Dhttp.proxyHost=webcache.mydomain.com  
+-Dhttp.proxyPort=8080  
+-Dhttp.noProxyHosts=”localhost|host.mydomain.com” GetURL  
+-Dhttp.proxyUser=USERNAME  
+-Dhttp.proxyPassword=PASSWORD  
 
 
 Need to make REstfull serevice to set up alerts
 
-Создаем канал в телеграме
-Добавляем бота
-Авторизовываемся в нем с помощью команды /email
-Вводим код, который пришел на почту с помощью команды /code (Код действителен в течении 30 минут)
-Прописываем название события, чтобы подписаться на него и получать уведомления командой /event (Название события должно быть уникальным)
-Создаем тестовый алерт для проверки работы бота
+## HowTo
+- Создаем канал в телеграме
+- Добавляем бота
+- Авторизовываемся в нем с помощью команды /email
+- Вводим код, который пришел на почту с помощью команды /code (Код действителен в течении 30 минут)
+- Прописываем название события, чтобы подписаться на него и получать уведомления командой /event - - (Название события должно быть уникальным)
+- Создаем тестовый алерт для проверки работы бота
 
+## TODO
