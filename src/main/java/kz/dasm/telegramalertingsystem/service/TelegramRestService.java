@@ -5,14 +5,84 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import kz.dasm.telegramalertingsystem.api.TelegramApi;
+import kz.dasm.telegramalertingsystem.db.DataBase;
+import kz.dasm.telegramalertingsystem.models.Response;
+
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Logger;
+
+import com.alibaba.fastjson.JSON;
 
 @RestController
 public class TelegramRestService {
 
-    @GetMapping("/telegram/{chat_id}/{text}")
-    public String sendMessage(@PathVariable long chat_id, @PathVariable String message) {
+    private static Logger log = Logger.getLogger(TelegramApi.class.getName());
+
+    @GetMapping("/telegram/send-message-to-chat/{chat_id}/{text}")
+    public String sendMessageToChat(@PathVariable long chat_id, @PathVariable String message) {
         TelegramApi telegramApi = new TelegramApi();
         return telegramApi.sendMessage(chat_id, message);
     }
+
+    @GetMapping("/telegram/send-message-to-event/{event_name}/{event_message}")
+    public String sendMessageToEvent(@PathVariable String event_name, @PathVariable String event_message) {
+        TelegramApi telegramApi = new TelegramApi();        
+
+        log.info("event_name: " + event_name);
+        log.info("event_message: " + event_message);
+        List<String> chat_id = getChatId(event_name);
+        Response response_from_telegram;
+        String response_from_telegram_string = "";
+        String result = "OK";
+        Iterator<String> chat_idIterator = chat_id.iterator();
+        DataBase db = new DataBase();
+        try {
+            while (chat_idIterator.hasNext()) {
+                String chat_id_from_list = chat_idIterator.next();
+                if (chat_id_from_list.length() != 0) {
+
+                    response_from_telegram_string = telegramApi.sendMessage(Long.parseLong(chat_id_from_list), event_message, "");
+
+                    if (response_from_telegram_string.contains("\"ok\":false")) {
+                        if (response_from_telegram_string.contains("\"description\":\"Bad Request: group chat was upgraded to a supergroup chat\"")) {
+                            response_from_telegram = JSON.parseObject(response_from_telegram_string, Response.class);
+                            db.updateChatID(Long.valueOf(chat_id_from_list), response_from_telegram.getParameters().getMigrate_to_chat_id(), true);
+                        } else {
+                            log.info("Error response: " + response_from_telegram_string);
+                        }
+                    }
+
+                    /**
+                     * 1) Проверяем ок не ок. 2) Если ок - возвращяем результат
+                     * 3) Нет смотрим по какой ошибке. Если мигранули - меняем
+                     * скрипт
+                     */
+                    result = "OK";
+
+                } else {
+                    result = "Error";
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            db.closeConnection();
+        }
+        return result;
+    }
+
+
+    /**
+     * int getChatId(String event). Получаем чат айди для того, чтобы понимать к
+     * какой группе отправлять сообщения
+     */
+    private List<String> getChatId(String event) {
+        DataBase db = new DataBase();
+        List<String> chat_id = db.getEventsChatID(event, false);
+        db.closeConnection();
+        return chat_id;
+    }
+    
     
 }
