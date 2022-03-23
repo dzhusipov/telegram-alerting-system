@@ -24,9 +24,6 @@ java -jar build/libs/telegram-alerting-system-0.0.1-SNAPSHOT.jar
 -Dhttp.proxyUser=USERNAME  
 -Dhttp.proxyPassword=PASSWORD  
 
-
-Need to make REstfull serevice to set up alerts
-
 ## HowTo
 - Создаем канал в телеграме
 - Добавляем бота
