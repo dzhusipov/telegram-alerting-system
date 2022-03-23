@@ -184,7 +184,6 @@ public class TelegramApi {
             byte[] b = bout.toByteArray();
 
             url = new URL(URL + SEND_MESSAGE);
-            // TODO Govorukhin_35893
             connection = url.openConnection(/* PROXY */);
             httpConn = (HttpsURLConnection) connection;
 
