@@ -8,17 +8,58 @@ group = 'kz.dasm'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+sourceSets {
+    main {
+        java {
+            srcDir 'src/main/java'
+            srcDir 'build/generated-sources/jaxb'
+        }
+    }
+}
+
+task genJaxb {
+    ext.sourcesDir = "${buildDir}/generated-sources/jaxb"
+    ext.schema = "src/main/resources/telegram.xsd"
+
+    outputs.dir sourcesDir
+
+    doLast() {
+        project.ant {
+            taskdef name: "xjc", classname: "com.sun.tools.xjc.XJCTask",
+                    classpath: configurations.jaxb.asPath
+            mkdir(dir: sourcesDir)
+
+            xjc(destdir: sourcesDir, schema: schema) {
+                arg(value: "-wsdl")
+                produces(dir: sourcesDir, includes: "**/*.java")
+            }
+        }
+    }
+}
+
+configurations {
+    jaxb
+}
+
+bootJar {
+    archiveBaseName = 'telegram-alerting-system'
+    archiveVersion =  '0.1.0'
+}
+
 repositories {
 	mavenCentral()
 }
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	implementation 'org.springframework.boot:spring-boot-starter-web-services'
 	implementation 'com.alibaba:fastjson:1.2.79'
 	implementation 'com.sun.mail:javax.mail:1.6.2'
 	implementation 'org.xerial:sqlite-jdbc:3.36.0.3'
+	implementation 'wsdl4j:wsdl4j'
+	jaxb("org.glassfish.jaxb:jaxb-xjc")
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {
