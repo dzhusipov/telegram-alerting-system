@@ -8,6 +8,10 @@ group = 'kz.dasm'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+repositories {
+	mavenCentral()
+}
+
 sourceSets {
     main {
         java {
@@ -37,6 +41,8 @@ task genJaxb {
     }
 }
 
+compileJava.dependsOn genJaxb
+
 configurations {
     jaxb
 }
@@ -46,9 +52,6 @@ bootJar {
     archiveVersion =  '0.1.0'
 }
 
-repositories {
-	mavenCentral()
-}
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'

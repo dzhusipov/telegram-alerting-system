@@ -35,3 +35,6 @@ java -jar build/libs/telegram-alerting-system-0.0.1-SNAPSHOT.jar
 ## TODO
 - SOAP interface for old enterprise systems
 - Проверить в целом приложение полностью
+
+
+http://localhost:8080/ws/telegramAlertingSystem.wsdl

@@ -6,6 +6,9 @@ import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
 
+import kz.dasm.telegramalertingsystem.SendMessageRequest;
+import kz.dasm.telegramalertingsystem.SendMessageResponse;
+
 @Endpoint
 public class TelegramSoapService {
     private static final String NAMESPACE_URI = "http://telegramalertingsystem.dasm.kz/";
@@ -14,7 +17,7 @@ public class TelegramSoapService {
     @ResponsePayload
     public SendMessageResponse sendNessage(@RequestPayload SendMessageRequest sendMessageRequest) {
         SendMessageResponse response = new SendMessageResponse();
-        response.setReturn(request.getMessage());
+        response.setReturn(sendMessageRequest.getMessage());
         return response;
     }
 }

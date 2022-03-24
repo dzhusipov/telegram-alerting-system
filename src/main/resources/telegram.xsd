@@ -6,9 +6,9 @@
 
     <xs:element name="SendMessageRequest" type="tns:SendMessageRequest" />
     <xs:element name="SendMessageResponse" type="tns:SendMessageResponse" />
-    <xs:element name="SendPhotoRequest" type="tns:SendPhoto" />
+    <xs:element name="SendPhotoRequest" type="tns:SendPhotoRequest" />
     <xs:element name="SendPhotoResponse" type="tns:SendPhotoResponse" />
-    <xs:element name="SendStickerRequest" type="tns:SendSticker" />
+    <xs:element name="SendStickerRequest" type="tns:SendStickerRequest" />
     <xs:element name="SendStickerResponse" type="tns:SendStickerResponse" />
     <xs:complexType name="SendPhotoRequest">
         <xs:sequence>
