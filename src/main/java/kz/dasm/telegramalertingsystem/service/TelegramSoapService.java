@@ -16,8 +16,8 @@ public class TelegramSoapService {
     private static final String NAMESPACE_URI = "http://telegramalertingsystem.dasm.kz/";
 
 	@PayloadRoot(namespace = NAMESPACE_URI, localPart = "SendMessageRequest")
-    @ResponsePayload
-    public JAXBElement<SendMessageResponse> sendMessage(@RequestPayload SendMessageRequest sendMessageRequest) {
+    public @ResponsePayload JAXBElement<SendMessageResponse> sendMessage(@RequestPayload SendMessageRequest sendMessageRequest) {
+        System.out.println("Here! ");
         SendMessageResponse response = new SendMessageResponse();
         response.setReturn(sendMessageRequest.getMessage());
         ObjectFactory factory = new ObjectFactory();
