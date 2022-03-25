@@ -116,46 +116,46 @@ public class SystemCommand {
         if (getCommand(text).equalsIgnoreCase("/email")) {
             if (!getCommandArg(text).equalsIgnoreCase("NoTextError") && check_email(getCommandArg(text)) && !getCommandArg(text).contains(" ")) {
                 this.send_email(getCommandArg(text), chat_id);
-                telegramAPI.sendMessage(chat_id, "Письмо ушло, ожидайте.");
+                telegramAPI.sendMessage(chat_id, "Email was sent. Check inbox pls.");
             }
             return;
         }
 
         if (getCommand(text).equalsIgnoreCase("/code") && !getCommandArg(text).equalsIgnoreCase("NoTextError") && isInteger(getCommandArg(text))) {
             if (check_code(Integer.valueOf(getCommandArg(text)), chat_id) == 1) {
-                telegramAPI.sendMessage(chat_id, "Введенный вами код не вереный");
+                telegramAPI.sendMessage(chat_id, "Code is incorrect");
                 return;
             }
             if (check_code(Integer.valueOf(getCommandArg(text)), chat_id) == 2) {
-                telegramAPI.sendMessage(chat_id, "Введенный вами код устарел");
+                telegramAPI.sendMessage(chat_id, "Code is expired");
                 return;
             } else {
-                telegramAPI.sendMessage(chat_id, "Отлично, Вы авторизованы! Можем начинать");
+                telegramAPI.sendMessage(chat_id, "Well done! Now you can use bot.");
                 //telegramAPI.sendSticker(chat_id, "CAADAgADKgEAAjdtEAIXLp6mv2VZvAI");
             }
         }
 
         if (!this.isAuthorized(chat_id)) {
-            telegramAPI.sendMessage(chat_id, "Вы не авторизованы.");
-            telegramAPI.sendMessage(chat_id, "Для авторизации введите /email E-mail");
+            telegramAPI.sendMessage(chat_id, "You are not authorized.");
+            telegramAPI.sendMessage(chat_id, "For authorizationm please enter /email E-mail");
             return;
         }
 
         switch (getCommand(text)) {
             case "/start":
-                telegramAPI.sendMessage(chat_id, "Бот предназначен только для некоторых сотрудников банка.");
-                telegramAPI.sendMessage(chat_id, "Введите название /event НАЗВАНИЕ_СОБЫТИЙ");
-                telegramAPI.sendMessage(chat_id, "НАЗВАНИЕ_СОБЫТИЙ Например SystemEvents");
+                telegramAPI.sendMessage(chat_id, "Bot can be user for only internal usage.");
+                telegramAPI.sendMessage(chat_id, "Plsease enter /followevent EVENT_NAME");
+                telegramAPI.sendMessage(chat_id, "For exsmple SystemEvents");
                 break;
             case "/stop_spam":
-                telegramAPI.sendMessage(chat_id, "Рассылка на группу остановлена");
+                telegramAPI.sendMessage(chat_id, "Spam is stopped");
                 break;
             case "/start_spam":
-                telegramAPI.sendMessage(chat_id, "Рассылка на группу запущена");
+                telegramAPI.sendMessage(chat_id, "Spam is started");
                 break;
             case "/followevent":
                 if (getCommandArg(text).equalsIgnoreCase("NoTextError")) {
-                    telegramAPI.sendMessage(chat_id, "Например необходимо ввести: /followevent zabbix_shmabix");
+                    telegramAPI.sendMessage(chat_id, "For example you need type: /followevent zabbix_shmabix");
                 } else {
 
                     /**
@@ -163,10 +163,10 @@ public class SystemCommand {
                      * подписывался на событие
                      */
                     if (db.getSignetEvents(chat_id, getCommandArg(text), false) == 0) {
-                        telegramAPI.sendMessage(chat_id, "Вы уже подписаны на событие " + getCommandArg(text));
+                        telegramAPI.sendMessage(chat_id, "You are already subscribed for event " + getCommandArg(text));
                     }
                     if (db.getSignetEvents(chat_id, getCommandArg(text), false) == 1) {
-                        telegramAPI.sendMessage(chat_id, "Вы подписаны на событие - " + getCommandArg(text));
+                        telegramAPI.sendMessage(chat_id, "You are subscribed for event - " + getCommandArg(text));
                         /*
                     Тут нужно сохранить айди чата в связке с названием комнаты
                     Если уже есть такая группа а название другое, то предложить ввести другую команду
@@ -191,26 +191,26 @@ public class SystemCommand {
 
             case "/help":
                 telegramAPI.sendMessage(chat_id,
-                        "/start - Начало работы с ботом\n"
+                        "/start - Start with bot\n"
                         /*
                                         Пока оставим эту затею, и займемся тем кто будет случать.
                                         + "/start_spam - Стартуем рассылку (def true)\n"
                                         + "/stop_spam - Останавливаем рассылку\n"
                          */
-                        + "/help - помощь по командам\n"
-                        + "/followevent - Хочу подписаться на событие\n"
-                        + "/eventslist - Список всех событий, скоро удалю\n"
-                        + "/myevents - Список подписанных событий, включая и почтовые\n"
-                        + "/unfollowevent - Отписаться от события\n"
-                        + "/followemail - Подписаться на почтовые уведомления\n"
-                        + "/unfollowemail - Отписаться от почтовых уведомлений\n"
-                        + "/emaileventslist - Список почтовых уведомлений");
+                        + "/help - Command list\n"
+                        + "/followevent - Follow event\n"
+                        + "/eventslist - List of all events\n"
+                        + "/myevents - My events subscriptions\n"
+                        + "/unfollowevent - Unfollow from event\n"
+                        + "/followemail - Follow to email events\n"
+                        + "/unfollowemail - Unfollow from email events \n"
+                        + "/emaileventslist - List of email events");
                 break;
             case "/alarm":
                 telegramAPI.sendMessage(chat_id, ""
-                        + "/alarmTime 8:45 - точное время GMT+6\n"
-                        + "/alarmDays 1,2,3,4,5 - дни недели\n"
-                        + "/alarmStop - остановить это безобразие");
+                        + "/alarmTime 8:45 - time in GMT+6\n"
+                        + "/alarmDays 1,2,3,4,5 - week days\n"
+                        + "/alarmStop - stop this shit");
 
                 break;
             /*case "/alarmTime":
@@ -238,44 +238,44 @@ public class SystemCommand {
 
                 if (db.countEvents4Delete(getCommandArg(text)) == true) {
                     db.deleteEvent(getCommandArg(text));
-                    telegramAPI.sendMessage(chat_id, getCommandArg(text) + " событие удалено!");
+                    telegramAPI.sendMessage(chat_id, getCommandArg(text) + " event was deleted!");
                     db.closeConnection();
                     break;
                 }
                 if (db.countEvents4Delete(getCommandArg(text)) == false) {
-                    telegramAPI.sendMessage(chat_id, getCommandArg(text) + " событие не удалено! ");
+                    telegramAPI.sendMessage(chat_id, getCommandArg(text) + " event was not deleted! ");
                     db.closeConnection();
                     break;
                 }
             case "/unfollowevent": {
                 if (db.isFollowEvent(getCommandArg(text), chat_id, false) == false) {
                     db.unfollowFromEvent(getCommandArg(text), chat_id, false);
-                    telegramAPI.sendMessage(chat_id, "Вы отписались от события - " + getCommandArg(text));
+                    telegramAPI.sendMessage(chat_id, "You are unsubscribed from event - " + getCommandArg(text));
                     db.closeConnection();
                     break;
                 }
                 if (db.isFollowEvent(getCommandArg(text), chat_id, true) == true) {
-                    telegramAPI.sendMessage(chat_id, getCommandArg(text) + " что бы отписаться от события вы должны быть на него подписаны");
+                    telegramAPI.sendMessage(chat_id, getCommandArg(text) + " you can't unfollow from event that weas not subscribed");
                     db.closeConnection();
                     break;
                 }
             }
 
             case "/shutdown": {
-                telegramAPI.sendMessage(chat_id, "Оставайтесь на месте, сейчас к вам приедут братки и выключат вас.");
+                telegramAPI.sendMessage(chat_id, "Just wait, I'll off you :).");
                 break;
             }
 
             case "/followemail": {
 
                 if (getCommandArg(text).equalsIgnoreCase("NoTextError")) {
-                    telegramAPI.sendMessage(chat_id, "Например необходимо ввести: /followemail zabbix_shmabix");
+                    telegramAPI.sendMessage(chat_id, "For example you need type: /followemail zabbix_shmabix");
                 } else /**
                  * Этот условия для того что бы один человек много раз не
                  * подписывался на событие
                  */
                 if (db.getSignetEvents(chat_id, getCommandArgBroadcast(text), true) == 1) {
-                    telegramAPI.sendMessage(chat_id, "Вы подписаны на почтовую тему - " + getCommandArgBroadcast(text));
+                    telegramAPI.sendMessage(chat_id, "You subscribed for email event - " + getCommandArgBroadcast(text));
                     /*
                             Тут нужно сохранить айди чата в связке с названием комнаты
                             Если уже есть такая группа а название другое, то предложить ввести другую команду
@@ -285,7 +285,7 @@ public class SystemCommand {
                     db.updateOrInsertChatEvents(chat_id, getCommandArgBroadcast(text), chat_name, true);
                     db.closeConnection();
                 } else {
-                    telegramAPI.sendMessage(chat_id, "Вы уже подписаны на почтовую тему  " + getCommandArgBroadcast(text));
+                    telegramAPI.sendMessage(chat_id, "You already subscribed to email event " + getCommandArgBroadcast(text));
                 }
                 break;
             }
@@ -293,12 +293,12 @@ public class SystemCommand {
             case "/unfollowemail": {
                 if (db.isFollowEvent(getCommandArgBroadcast(text), chat_id, true) == false) {
                     db.unfollowFromEvent(getCommandArgBroadcast(text), chat_id, true);
-                    telegramAPI.sendMessage(chat_id, "Вы отписались от события - " + getCommandArgBroadcast(text));
+                    telegramAPI.sendMessage(chat_id, "Unfollow from event - " + getCommandArgBroadcast(text));
                     db.closeConnection();
                     break;
                 }
                 if (db.isFollowEvent(getCommandArg(text), chat_id, true) == true) {
-                    telegramAPI.sendMessage(chat_id, getCommandArg(text) + " что бы отписаться от события вы должны быть на него подписаны");
+                    telegramAPI.sendMessage(chat_id, getCommandArg(text) + " you can't unfollow from event that weas not subscribed");
                     db.closeConnection();
                     break;
                 }

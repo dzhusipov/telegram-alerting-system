@@ -3,8 +3,8 @@ package kz.dasm.telegramalertingsystem.api;
 import com.alibaba.fastjson.JSON;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import kz.dasm.telegramalertingsystem.db.DataBase;
 import kz.dasm.telegramalertingsystem.models.GetUpdates;
@@ -20,15 +20,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-//import java.net.InetSocketAddress;
-//import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.Proxy.Type;
 import java.util.List;
-//import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -179,10 +173,12 @@ public class TelegramApi {
     //    requestFactory.setProxy(proxy);
 
         RestTemplate restTemplate = new RestTemplate();
-        String telegramApiUrl = URL + SEND_MESSAGE;
-        ResponseEntity<String> response = restTemplate.getForEntity(telegramApiUrl , String.class);
 
-        log.info(response.getStatusCode().toString());
+        UriComponentsBuilder telegramRequestBuilder = UriComponentsBuilder.fromHttpUrl(URL + SEND_MESSAGE)
+        .queryParam("chat_id", chat_id)
+        .queryParam("text", text_message);
+
+        ResponseEntity<String> response = restTemplate.getForEntity(telegramRequestBuilder.toUriString(), String.class);
 
         /*
          * try {
