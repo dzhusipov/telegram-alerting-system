@@ -2,6 +2,10 @@ package kz.dasm.telegramalertingsystem.api;
 
 import com.alibaba.fastjson.JSON;
 
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.web.client.RestTemplate;
+
 import kz.dasm.telegramalertingsystem.db.DataBase;
 import kz.dasm.telegramalertingsystem.models.GetUpdates;
 import kz.dasm.telegramalertingsystem.models.SendMessage;
@@ -16,10 +20,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 //import java.net.InetSocketAddress;
 //import java.net.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.Proxy.Type;
 import java.util.List;
 //import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -35,10 +42,12 @@ import java.util.logging.Logger;
  */
 
 public class TelegramApi {
-    //Logger
+    // Logger
     private static Logger log = Logger.getLogger(TelegramApi.class.getName());
-    //private static final String PROXY_HOST = "proxy-all"; // прокся для корпоративщиков
-    //private static final int PROXY_PORT = 8000; // порт прокси для корпоративщиков
+    // private static final String PROXY_HOST = "proxy-all"; // прокся для
+    // корпоративщиков
+    // private static final int PROXY_PORT = 8000; // порт прокси для
+    // корпоративщиков
     private static final String TELEGRAM_API_HOSTNAME = "https://api.telegram.org/bot";
     /*------------------------------------------------------------------------------------------*
      * Токен бота. Зная его, можно управлять им.
@@ -58,7 +67,8 @@ public class TelegramApi {
     private static final String SEND_MESSAGE = "sendMessage";
     // private static final String SEND_STICKER = "sendSticker";
 
-    //private static final Proxy PROXY = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, PROXY_PORT));
+    // private static final Proxy PROXY = new Proxy(Proxy.Type.HTTP, new
+    // InetSocketAddress(PROXY_HOST, PROXY_PORT));
     private static final String GRAFANA_TOKEN = "GRAFANA_TOKEN";
     private static final String AUTH_TYPE = "Bearer ";
     private static final String SEND_PHOTO = "sendPhoto";
@@ -156,90 +166,103 @@ public class TelegramApi {
             parse_mode = "None";
         }
 
-        String result = "";
-        try {
-            URL url = null;
-            URLConnection connection = null;
-            HttpsURLConnection httpConn = null;
+        
+        SendMessage sendMessageObj = new SendMessage();
+        parse_mode = parse_mode.equalsIgnoreCase("") || parse_mode.isEmpty() ? "None" : parse_mode;
 
-            ByteArrayOutputStream bout = null;
-            OutputStream out = null;
-            String output = null;
-            BufferedReader bufferReader;
-            StringBuilder sb = new StringBuilder();
-            bout = new ByteArrayOutputStream();
+        sendMessageObj.setChat_id(chat_id);
+        sendMessageObj.setText(text_message);
 
-            SendMessage sendMessageObj = new SendMessage();
-            if (parse_mode.equalsIgnoreCase("") || parse_mode.isEmpty())
-                parse_mode = "None";
-            sendMessageObj.setChat_id(chat_id);
-            sendMessageObj.setText(text_message);
-            // sendMessageObj.setParse_mode(parse_mode);
-            log.info(text_message); // отправленные сообщения смотрим.
-            String json_text = JSON.toJSONString(sendMessageObj);
-            log.info(json_text); // режим парсинга.
-            byte[] buffer = new byte[json_text.length()];
-            buffer = json_text.getBytes();
-            bout.write(buffer);
-            byte[] b = bout.toByteArray();
+//        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+  //      Proxy proxy = new Proxy(Type.HTTP, new InetSocketAddress("my.host.com", 8080));
 
-            url = new URL(URL + SEND_MESSAGE);
-            connection = url.openConnection(/* PROXY */);
-            httpConn = (HttpsURLConnection) connection;
+    //    requestFactory.setProxy(proxy);
 
-            httpConn.setRequestProperty("Content-Type", CONTENT_TYPE);
-            httpConn.setRequestProperty("Accept-Encoding", ACCEPT_ENCODING);
-            httpConn.setRequestMethod(POST);
-            httpConn.setDoOutput(true);
-            httpConn.setDoInput(true);
+        RestTemplate restTemplate = new RestTemplate();
+        String telegramApiUrl = URL + SEND_MESSAGE;
+        ResponseEntity<String> response = restTemplate.getForEntity(telegramApiUrl , String.class);
 
-            // this.setProxy();
+        log.info(response.getStatusCode().toString());
 
-            httpConn.connect();
-            out = httpConn.getOutputStream();
-            out.write(b);
-            out.close();
-
-            if (httpConn.getResponseCode() != 400 && httpConn.getResponseCode() != 502
-                    && httpConn.getResponseCode() != 403) {
-                InputStreamReader inputStreamReader = new InputStreamReader(httpConn.getInputStream(), CHARSET);
-                bufferReader = new BufferedReader(inputStreamReader);
-
-                while ((output = bufferReader.readLine()) != null) {
-                    sb.append(output);
-                }
-                result = sb.toString();
-            } else {
-                InputStreamReader inputStreamReader = new InputStreamReader(httpConn.getErrorStream(), CHARSET);
-                bufferReader = new BufferedReader(inputStreamReader);
-
-                while ((output = bufferReader.readLine()) != null) {
-                    sb.append(output);
-                }
-                result = "Proxy Bad Request";
-            }
-
-            /*
-             * InputStreamReader inputStreamReader = new
-             * InputStreamReader(httpConn.getInputStream(), CHARSET);
-             * bufferReader = new BufferedReader(inputStreamReader);
-             * 
-             * while ((output = bufferReader.readLine()) != null) {
-             * sb.append(output);
-             * }
-             */
-            result = sb.toString();
-
-            log.info("Result: " + result);
-            // this.disableProxy();
-        } catch (IOException e) {
-            log.info("DAsm: Error in TelegramApi sendMessage: " + System.getProperty("http.proxyHost")
-                    + System.getProperty("https.proxyHost"));
-            log.info(ERROR);
-            result = null;
-            // this.disableProxy();
-        }
-        return result;
+        /*
+         * try {
+         * URL url = null;
+         * URLConnection connection = null;
+         * HttpsURLConnection httpConn = null;
+         * 
+         * ByteArrayOutputStream bout = null;
+         * OutputStream out = null;
+         * String output = null;
+         * BufferedReader bufferReader;
+         * StringBuilder sb = new StringBuilder();
+         * bout = new ByteArrayOutputStream();
+         * 
+         * SendMessage sendMessageObj = new SendMessage();
+         * if (parse_mode.equalsIgnoreCase("") || parse_mode.isEmpty())
+         * parse_mode = "None";
+         * sendMessageObj.setChat_id(chat_id);
+         * sendMessageObj.setText(text_message);
+         * // sendMessageObj.setParse_mode(parse_mode);
+         * log.info(text_message); // отправленные сообщения смотрим.
+         * String json_text = JSON.toJSONString(sendMessageObj);
+         * log.info(json_text); // режим парсинга.
+         * byte[] buffer = new byte[json_text.length()];
+         * buffer = json_text.getBytes();
+         * bout.write(buffer);
+         * byte[] b = bout.toByteArray();
+         * 
+         * url = new URL(URL + SEND_MESSAGE);
+         * connection = url.openConnection();
+         * httpConn = (HttpsURLConnection) connection;
+         * 
+         * httpConn.setRequestProperty("Content-Type", CONTENT_TYPE);
+         * httpConn.setRequestProperty("Accept-Encoding", ACCEPT_ENCODING);
+         * httpConn.setRequestMethod(POST);
+         * httpConn.setDoOutput(true);
+         * httpConn.setDoInput(true);
+         * 
+         * // this.setProxy();
+         * 
+         * httpConn.connect();
+         * out = httpConn.getOutputStream();
+         * out.write(b);
+         * out.close();
+         * 
+         * if (httpConn.getResponseCode() != 400 && httpConn.getResponseCode() != 502
+         * && httpConn.getResponseCode() != 403) {
+         * InputStreamReader inputStreamReader = new
+         * InputStreamReader(httpConn.getInputStream(), CHARSET);
+         * bufferReader = new BufferedReader(inputStreamReader);
+         * 
+         * while ((output = bufferReader.readLine()) != null) {
+         * sb.append(output);
+         * }
+         * result = sb.toString();
+         * } else {
+         * InputStreamReader inputStreamReader = new
+         * InputStreamReader(httpConn.getErrorStream(), CHARSET);
+         * bufferReader = new BufferedReader(inputStreamReader);
+         * 
+         * while ((output = bufferReader.readLine()) != null) {
+         * sb.append(output);
+         * }
+         * result = "Proxy Bad Request";
+         * }
+         * 
+         * result = sb.toString();
+         * 
+         * log.info("Result: " + result);
+         * // this.disableProxy();
+         * } catch (IOException e) {
+         * log.info("DAsm: Error in TelegramApi sendMessage: " +
+         * System.getProperty("http.proxyHost")
+         * + System.getProperty("https.proxyHost"));
+         * log.info(ERROR);
+         * result = null;
+         * // this.disableProxy();
+         * }
+         */
+        return response.toString();
     }
 
     /**
