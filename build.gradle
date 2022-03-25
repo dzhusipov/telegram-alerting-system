@@ -61,14 +61,13 @@ dependencies {
 	implementation 'org.xerial:sqlite-jdbc:3.36.0.3'
 	implementation 'wsdl4j:wsdl4j'
 
-    //implementation 'com.sun.xml.bind:jaxb-core:3.0.2'
-    //implementation 'javax.xml.bind:jaxb-api:2.3.1'
-    //implementation 'com.sun.xml.bind:jaxb-impl:3.0.2'
-    //implementation 'org.javassist:javassist:3.28.0-GA'
-
-    //implementation 'javax.xml.bind:jaxb-api:2.3.1'
-    //implementation 'javax.activation:activation:1.1.1'
-    //implementation 'org.glassfish.jaxb:jaxb-runtime:3.0.2'
+    
+    implementation 'com.sun.xml.bind:jaxb-core:2.3.0.1'
+    implementation 'javax.xml.bind:jaxb-api:2.3.1'
+    implementation 'com.sun.xml.bind:jaxb-impl:2.3.1'
+    implementation 'org.javassist:javassist:3.28.0-GA'
+    implementation 'javax.activation:activation:1.1.1'
+    implementation 'org.glassfish.jaxb:jaxb-runtime:2.3.1'
 
     jaxb("org.glassfish.jaxb:jaxb-xjc")
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
