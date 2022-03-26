@@ -1,8 +1,6 @@
 
 package kz.dasm.telegramalertingsystem.handler;
 
-import ch.qos.logback.classic.Logger;
-import kz.dasm.telegramalertingsystem.api.TelegramApi;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -17,10 +15,9 @@ public class TelegramUpdateHandler {
 
     @Scheduled(fixedRate = 3000)
     public void TelegramUpdateHandlerTimer() {
-        //TelegramGetter serverGetter = new TelegramGetter();
-        //serverGetter.run();
+        TelegramGetter serverGetter = new TelegramGetter();
+        serverGetter.run();
         log.info("Telegram get update");
-
     }
 
 }
