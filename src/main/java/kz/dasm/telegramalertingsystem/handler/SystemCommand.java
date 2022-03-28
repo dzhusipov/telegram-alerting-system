@@ -106,7 +106,7 @@ public class SystemCommand {
      * @throws java.io.IOException
      */
     public void analyzeText(String text, Response resp, int index) throws IOException {
-        log.info(text); // смотри что прислали
+        //log.info(text); // смотри что прислали
         DataBase db = new DataBase();
 
         long chat_id = resp.getResult()[index].getMessage().getChat().getId();

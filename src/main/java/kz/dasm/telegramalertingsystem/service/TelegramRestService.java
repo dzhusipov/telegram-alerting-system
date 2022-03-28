@@ -37,9 +37,10 @@ public class TelegramRestService {
         String result = "OK";
         Iterator<String> chat_idIterator = chat_id.iterator();
         DataBase db = new DataBase();
+        String chat_id_from_list;
         try {
             while (chat_idIterator.hasNext()) {
-                String chat_id_from_list = chat_idIterator.next();
+                chat_id_from_list = chat_idIterator.next();
                 if (chat_id_from_list.length() != 0) {
 
                     response_from_telegram_string = telegramApi.sendMessage(Long.parseLong(chat_id_from_list), event_message, "");

@@ -1,24 +1,15 @@
 package kz.dasm.telegramalertingsystem.api;
 
-import com.alibaba.fastjson.JSON;
-
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import kz.dasm.telegramalertingsystem.db.DataBase;
 import kz.dasm.telegramalertingsystem.models.GetUpdates;
 import kz.dasm.telegramalertingsystem.models.SendMessage;
 
-import javax.net.ssl.HttpsURLConnection;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
@@ -52,14 +43,11 @@ public class TelegramApi {
     /*------------------------------------------------------------------------------------------*/
     private static final String URL = TELEGRAM_API_HOSTNAME + BOT_TOKEN + "/";
     private static final String CHARSET = "utf-8";
-    private static final String CONTENT_TYPE = "application/json; charset=" + CHARSET;
-    private static final String POST = "POST";
-    private static final String ACCEPT_ENCODING = "gzip,deflate";
     private static final String ERROR = "Shit happens TelegramAPI.java!";
 
     private static final String GET_UPDATES = "getUpdates";
     private static final String SEND_MESSAGE = "sendMessage";
-    // private static final String SEND_STICKER = "sendSticker";
+    private static final String SEND_STICKER = "sendSticker";
 
     // private static final Proxy PROXY = new Proxy(Proxy.Type.HTTP, new
     // InetSocketAddress(PROXY_HOST, PROXY_PORT));
@@ -73,70 +61,6 @@ public class TelegramApi {
      */
     public void TelegramAPI() {
         // this.setProxy();
-    }
-
-    // TODO need to fix
-    public String sendSticker(long chat_id, String sticker_id) {
-        String result = "";
-        /*
-         * try {
-         * URL url = null;
-         * URLConnection connection = null;
-         * HttpURLConnection httpConn = null;
-         * 
-         * ByteArrayOutputStream bout = null;
-         * OutputStream out = null;
-         * String output = null;
-         * BufferedReader bufferReader;
-         * StringBuilder sb = new StringBuilder();
-         * bout = new ByteArrayOutputStream();
-         * 
-         * SendSticker sendStickerObj = new SendSticker();
-         * 
-         * sendStickerObj.setChat_id(chat_id);
-         * sendStickerObj.setSticker(sticker_id);
-         * 
-         * String json_text = JSON.toJSONString(sendStickerObj);
-         * byte[] buffer = new byte[json_text.length()];
-         * buffer = json_text.getBytes();
-         * bout.write(buffer);
-         * byte[] b = bout.toByteArray();
-         * 
-         * url = new URL(URL + SEND_STICKER);
-         * //connection = url.openConnection(PROXY);
-         * connection = url.openConnection();
-         * httpConn = (HttpURLConnection) connection;
-         * 
-         * httpConn.setRequestProperty("Content-Type", CONTENT_TYPE);
-         * httpConn.setRequestProperty("Accept-Encoding", ACCEPT_ENCODING);
-         * httpConn.setRequestMethod(POST);
-         * httpConn.setDoOutput(true);
-         * httpConn.setDoInput(true);
-         * //this.setProxy();
-         * httpConn.connect();
-         * out = httpConn.getOutputStream();
-         * out.write(b);
-         * out.close();
-         * 
-         * InputStreamReader inputStreamReader = new
-         * InputStreamReader(httpConn.getInputStream(), CHARSET);
-         * bufferReader = new BufferedReader(inputStreamReader);
-         * 
-         * while ((output = bufferReader.readLine()) != null) {
-         * sb.append(output);
-         * }
-         * result = sb.toString();
-         * 
-         * } catch (IOException e) {
-         * log.info("DAsm: Error in TelegramApi sendSticker: " +
-         * System.getProperty("http.proxyHost") +
-         * System.getProperty("https.proxyHost"));
-         * log.info(ERROR);
-         * log.info(e);
-         * result = null;
-         * }
-         */
-        return result;
     }
 
     /**
@@ -160,105 +84,16 @@ public class TelegramApi {
             parse_mode = "None";
         }
 
-        
         SendMessage sendMessageObj = new SendMessage();
         parse_mode = parse_mode.equalsIgnoreCase("") || parse_mode.isEmpty() ? "None" : parse_mode;
 
         sendMessageObj.setChat_id(chat_id);
         sendMessageObj.setText(text_message);
 
-//        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
-  //      Proxy proxy = new Proxy(Type.HTTP, new InetSocketAddress("my.host.com", 8080));
-
-    //    requestFactory.setProxy(proxy);
-
         RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.postForObject(URL + SEND_MESSAGE, sendMessageObj, String.class);
 
-        UriComponentsBuilder telegramRequestBuilder = UriComponentsBuilder.fromHttpUrl(URL + SEND_MESSAGE)
-        .queryParam("chat_id", chat_id)
-        .queryParam("text", text_message);
-
-        ResponseEntity<String> response = restTemplate.getForEntity(telegramRequestBuilder.toUriString(), String.class);
-
-        /*
-         * try {
-         * URL url = null;
-         * URLConnection connection = null;
-         * HttpsURLConnection httpConn = null;
-         * 
-         * ByteArrayOutputStream bout = null;
-         * OutputStream out = null;
-         * String output = null;
-         * BufferedReader bufferReader;
-         * StringBuilder sb = new StringBuilder();
-         * bout = new ByteArrayOutputStream();
-         * 
-         * SendMessage sendMessageObj = new SendMessage();
-         * if (parse_mode.equalsIgnoreCase("") || parse_mode.isEmpty())
-         * parse_mode = "None";
-         * sendMessageObj.setChat_id(chat_id);
-         * sendMessageObj.setText(text_message);
-         * // sendMessageObj.setParse_mode(parse_mode);
-         * log.info(text_message); // отправленные сообщения смотрим.
-         * String json_text = JSON.toJSONString(sendMessageObj);
-         * log.info(json_text); // режим парсинга.
-         * byte[] buffer = new byte[json_text.length()];
-         * buffer = json_text.getBytes();
-         * bout.write(buffer);
-         * byte[] b = bout.toByteArray();
-         * 
-         * url = new URL(URL + SEND_MESSAGE);
-         * connection = url.openConnection();
-         * httpConn = (HttpsURLConnection) connection;
-         * 
-         * httpConn.setRequestProperty("Content-Type", CONTENT_TYPE);
-         * httpConn.setRequestProperty("Accept-Encoding", ACCEPT_ENCODING);
-         * httpConn.setRequestMethod(POST);
-         * httpConn.setDoOutput(true);
-         * httpConn.setDoInput(true);
-         * 
-         * // this.setProxy();
-         * 
-         * httpConn.connect();
-         * out = httpConn.getOutputStream();
-         * out.write(b);
-         * out.close();
-         * 
-         * if (httpConn.getResponseCode() != 400 && httpConn.getResponseCode() != 502
-         * && httpConn.getResponseCode() != 403) {
-         * InputStreamReader inputStreamReader = new
-         * InputStreamReader(httpConn.getInputStream(), CHARSET);
-         * bufferReader = new BufferedReader(inputStreamReader);
-         * 
-         * while ((output = bufferReader.readLine()) != null) {
-         * sb.append(output);
-         * }
-         * result = sb.toString();
-         * } else {
-         * InputStreamReader inputStreamReader = new
-         * InputStreamReader(httpConn.getErrorStream(), CHARSET);
-         * bufferReader = new BufferedReader(inputStreamReader);
-         * 
-         * while ((output = bufferReader.readLine()) != null) {
-         * sb.append(output);
-         * }
-         * result = "Proxy Bad Request";
-         * }
-         * 
-         * result = sb.toString();
-         * 
-         * log.info("Result: " + result);
-         * // this.disableProxy();
-         * } catch (IOException e) {
-         * log.info("DAsm: Error in TelegramApi sendMessage: " +
-         * System.getProperty("http.proxyHost")
-         * + System.getProperty("https.proxyHost"));
-         * log.info(ERROR);
-         * result = null;
-         * // this.disableProxy();
-         * }
-         */
-        return response.toString();
+        return response;
     }
 
     /**
@@ -271,73 +106,15 @@ public class TelegramApi {
      * @return
      */
     public String getUpdates() {
-        HttpsURLConnection httpConn = null;
 
-        String result = "";
-        ByteArrayOutputStream bout = null;
-        OutputStream out = null;
-        String output = null;
-        BufferedReader bufferReader;
-        StringBuilder sb = new StringBuilder();
+        GetUpdates getUpdClass = new GetUpdates();
+        DataBase db = new DataBase();
+        getUpdClass.setOffset(db.getOffset());
 
-        try {
-            URL url = new URL(URL + GET_UPDATES);
-            URLConnection connection = url.openConnection(/* PROXY */);
-            httpConn = (HttpsURLConnection) connection;
-            bout = new ByteArrayOutputStream();
-            GetUpdates getUpdClass = new GetUpdates();
-            DataBase db = new DataBase();
-            getUpdClass.setOffset(db.getOffset());
-
-            String json_text = JSON.toJSONString(getUpdClass);
-            byte[] buffer = new byte[json_text.length()];
-            buffer = json_text.getBytes();
-            bout.write(buffer);
-            byte[] b = bout.toByteArray();
-
-            httpConn.setRequestProperty("Content-Type", CONTENT_TYPE);
-            httpConn.setRequestProperty("Accept-Encoding", ACCEPT_ENCODING);
-            httpConn.setRequestMethod(POST);
-            httpConn.setDoOutput(true);
-            httpConn.setDoInput(true);
-
-            // this.setProxy();
-
-            httpConn.connect();
-            out = httpConn.getOutputStream();
-            out.write(b);
-            out.close();
-            if (httpConn.getResponseCode() != 400 && httpConn.getResponseCode() != 502) {
-                InputStreamReader inputStreamReader = new InputStreamReader(httpConn.getInputStream(), CHARSET);
-                bufferReader = new BufferedReader(inputStreamReader);
-
-                while ((output = bufferReader.readLine()) != null) {
-                    sb.append(output);
-                }
-                result = sb.toString();
-            } else {
-                InputStreamReader inputStreamReader = new InputStreamReader(httpConn.getErrorStream(), CHARSET);
-                bufferReader = new BufferedReader(inputStreamReader);
-
-                while ((output = bufferReader.readLine()) != null) {
-                    sb.append(output);
-                }
-                result = "Proxy Bad Request";
-            }
-            /**
-             * Добавил тут недавно. МБ из-за тебя, жук, у меня сервер падал, а?
-             * Оч велика вероятность. Я каждую секунду открываю коннект к БД,
-             * а это ресурс. Ресурсы забивают память, хз какую, и все.
-             */
-            db.closeConnection();
-            // this.disableProxy();
-        } catch (IOException e) {
-            log.info("In many times this error was because of corporate proxy");
-            log.info(ERROR);
-            result = null;
-            // this.disableProxy();
-        }
-        return result;
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.postForObject(URL + GET_UPDATES, getUpdClass, String.class);
+        db.closeConnection();
+        return response;
     }
 
     /**
@@ -433,6 +210,81 @@ public class TelegramApi {
             log.info(ERROR);
             result = null;
         }
+        return result;
+    }
+
+    // TODO need to fix
+    public String sendSticker(long chat_id, String sticker_id) {
+        String result = "";
+        /*
+         * 
+         * SendSticker sendStickerObj = new SendSticker();
+         * 
+         * sendStickerObj.setChat_id(chat_id);
+         * sendStickerObj.setSticker(sticker_id);
+         * 
+         * RestTemplate restTemplate = new RestTemplate();
+         * String response = restTemplate.postForObject(URL + SEND_STICKER, getUpdClass,
+         * String.class);
+         * return response;
+         * 
+         * try {
+         * URL url = null;
+         * URLConnection connection = null;
+         * HttpURLConnection httpConn = null;
+         * 
+         * ByteArrayOutputStream bout = null;
+         * OutputStream out = null;
+         * String output = null;
+         * BufferedReader bufferReader;
+         * StringBuilder sb = new StringBuilder();
+         * bout = new ByteArrayOutputStream();
+         * 
+         * SendSticker sendStickerObj = new SendSticker();
+         * 
+         * sendStickerObj.setChat_id(chat_id);
+         * sendStickerObj.setSticker(sticker_id);
+         * 
+         * String json_text = JSON.toJSONString(sendStickerObj);
+         * byte[] buffer = new byte[json_text.length()];
+         * buffer = json_text.getBytes();
+         * bout.write(buffer);
+         * byte[] b = bout.toByteArray();
+         * 
+         * url = new URL(URL + SEND_STICKER);
+         * //connection = url.openConnection(PROXY);
+         * connection = url.openConnection();
+         * httpConn = (HttpURLConnection) connection;
+         * 
+         * httpConn.setRequestProperty("Content-Type", CONTENT_TYPE);
+         * httpConn.setRequestProperty("Accept-Encoding", ACCEPT_ENCODING);
+         * httpConn.setRequestMethod(POST);
+         * httpConn.setDoOutput(true);
+         * httpConn.setDoInput(true);
+         * //this.setProxy();
+         * httpConn.connect();
+         * out = httpConn.getOutputStream();
+         * out.write(b);
+         * out.close();
+         * 
+         * InputStreamReader inputStreamReader = new
+         * InputStreamReader(httpConn.getInputStream(), CHARSET);
+         * bufferReader = new BufferedReader(inputStreamReader);
+         * 
+         * while ((output = bufferReader.readLine()) != null) {
+         * sb.append(output);
+         * }
+         * result = sb.toString();
+         * 
+         * } catch (IOException e) {
+         * log.info("DAsm: Error in TelegramApi sendSticker: " +
+         * System.getProperty("http.proxyHost") +
+         * System.getProperty("https.proxyHost"));
+         * log.info(ERROR);
+         * log.info(e);
+         * result = null;
+         * }
+         */
         return result;
     }
 

@@ -17,7 +17,7 @@ public class TelegramUpdateHandler {
     public void TelegramUpdateHandlerTimer() {
         TelegramGetter serverGetter = new TelegramGetter();
         serverGetter.run();
-        log.info("Telegram get update");
+        //log.info("Telegram get update");
     }
 
 }
