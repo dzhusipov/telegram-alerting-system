@@ -8,7 +8,6 @@ public class Authorizator {
 
     public static Timer timer;
 
-
     public void sendEmail(String code, String email_to) {
         SendEmail sendMail = new SendEmail();
         sendMail.sendMail(email_to, "Ваш код доступа в телеграм: " + code + "\n"
