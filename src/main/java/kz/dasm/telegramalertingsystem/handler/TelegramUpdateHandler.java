@@ -33,9 +33,9 @@ public class TelegramUpdateHandler {
 
     @Scheduled(fixedRate = 3000)
     public void TelegramUpdateHandlerTimer() {
+        log.info("Telegram get update started ...");
         TelegramGetter serverGetter = new TelegramGetter();
         serverGetter.run(getRequestFactory());
-        //log.info("Telegram get update");
     }
 
     private RestTemplate getRequestFactory() {
