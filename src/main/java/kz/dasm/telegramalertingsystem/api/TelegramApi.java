@@ -5,7 +5,7 @@ import org.springframework.web.client.RestTemplate;
 import kz.dasm.telegramalertingsystem.db.DataBase;
 import kz.dasm.telegramalertingsystem.models.GetUpdates;
 import kz.dasm.telegramalertingsystem.models.SendMessage;
-
+import kz.dasm.telegramalertingsystem.service.RestTemplateProxy;
 
 import java.io.File;
 import java.io.IOException;
@@ -87,8 +87,8 @@ public class TelegramApi {
 
         sendMessageObj.setChat_id(chat_id);
         sendMessageObj.setText(text_message);
-
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplateProxy restTemplateProxy = new RestTemplateProxy();
+        RestTemplate restTemplate = restTemplateProxy.getRequestFactory();
         String response = restTemplate.postForObject(URL + SEND_MESSAGE, sendMessageObj, String.class);
 
         return response;
@@ -109,7 +109,8 @@ public class TelegramApi {
         DataBase db = new DataBase();
         getUpdClass.setOffset(db.getOffset());
 
-        RestTemplate restTemplate = new RestTemplate();
+        RestTemplateProxy restTemplateProxy = new RestTemplateProxy();
+        RestTemplate restTemplate = restTemplateProxy.getRequestFactory();
         String response = restTemplate.postForObject(URL + GET_UPDATES, getUpdClass, String.class);
         db.closeConnection();
         return response;

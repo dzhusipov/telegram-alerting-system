@@ -38,3 +38,11 @@ java -jar build/libs/telegram-alerting-system-0.0.1-SNAPSHOT.jar
 
 
 http://localhost:8080/ws/telegramAlertingSystem.wsdl
+
+
+gradlew.bat clean && gradlew.bat build && java -jar build/libs/telegram-alerting-system-0.1.0.jar 
+
+
+
+
+./gradlew bootRun --args='--spring.profiles.active=dev'
