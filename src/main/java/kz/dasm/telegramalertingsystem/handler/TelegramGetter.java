@@ -45,7 +45,7 @@ public class TelegramGetter {
             if (responseObject != null) {
                 DataBase db = new DataBase();
 
-                SystemCommand systemComands = new SystemCommand();
+                SystemCommand systemComands = new SystemCommand(restTemplate);
                 if (responseObject.getOk().equalsIgnoreCase("true")) {
                     /*
                      * Если все хорошо, то понеслась жара
