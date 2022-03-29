@@ -31,12 +31,6 @@ public class TelegramRestService {
     @Value("${proxy.port}")
     int PROXY_SERVER_PORT;
 
-    @Value("${proxy.user}")
-    String PROXY_SERVER_USER;
-
-    @Value("${proxy.pass}")
-    String PROXY_SERVER_PASS;
-
     private RestTemplate getRequestFactory() {
 
         if (!PROXY_SERVER_HOST.isEmpty()) {

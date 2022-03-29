@@ -24,11 +24,6 @@ public class TelegramUpdateHandler {
     @Value("${proxy.port}")
     int PROXY_SERVER_PORT;
 
-    @Value("${proxy.user}")
-    String PROXY_SERVER_USER;
-
-    @Value("${proxy.pass}")
-    String PROXY_SERVER_PASS;
     private static java.util.logging.Logger log = java.util.logging.Logger.getLogger(TelegramUpdateHandler.class.getName());
 
     @Scheduled(fixedRate = 3000)
