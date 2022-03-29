@@ -5,7 +5,6 @@ import org.springframework.web.client.RestTemplate;
 import kz.dasm.telegramalertingsystem.db.DataBase;
 import kz.dasm.telegramalertingsystem.models.GetUpdates;
 import kz.dasm.telegramalertingsystem.models.SendMessage;
-import kz.dasm.telegramalertingsystem.service.RestTemplateProxy;
 
 import java.io.File;
 import java.io.IOException;
@@ -53,11 +52,13 @@ public class TelegramApi {
     private static final String AUTH_TYPE = "Bearer ";
     private static final String SEND_PHOTO = "sendPhoto";
 
+    private RestTemplate restTemplate;
     /**
      * Конструктор.
      * Прям тут, сразу выставляем проксю от ИБ - Привет Марат =)
      */
-    public void TelegramAPI() {
+    public TelegramApi(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
         // this.setProxy();
     }
 
@@ -87,9 +88,8 @@ public class TelegramApi {
 
         sendMessageObj.setChat_id(chat_id);
         sendMessageObj.setText(text_message);
-        RestTemplateProxy restTemplateProxy = new RestTemplateProxy();
-        RestTemplate restTemplate = restTemplateProxy.getRequestFactory();
-        String response = restTemplate.postForObject(URL + SEND_MESSAGE, sendMessageObj, String.class);
+       
+        String response = this.restTemplate.postForObject(URL + SEND_MESSAGE, sendMessageObj, String.class);
 
         return response;
     }
@@ -109,9 +109,7 @@ public class TelegramApi {
         DataBase db = new DataBase();
         getUpdClass.setOffset(db.getOffset());
 
-        RestTemplateProxy restTemplateProxy = new RestTemplateProxy();
-        RestTemplate restTemplate = restTemplateProxy.getRequestFactory();
-        String response = restTemplate.postForObject(URL + GET_UPDATES, getUpdClass, String.class);
+        String response = this.restTemplate.postForObject(URL + GET_UPDATES, getUpdClass, String.class);
         db.closeConnection();
         return response;
     }

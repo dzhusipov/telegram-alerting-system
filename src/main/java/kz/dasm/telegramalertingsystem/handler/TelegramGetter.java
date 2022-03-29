@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import com.alibaba.fastjson.JSON;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import kz.dasm.telegramalertingsystem.api.TelegramApi;
 import kz.dasm.telegramalertingsystem.db.DataBase;
@@ -25,8 +26,8 @@ public class TelegramGetter {
      * void start(). Стартуем! У меня джип в Москве! Метод начинает получать
      * обновления в телеграме.
      */
-    public void run() {
-        TelegramApi telegram = new TelegramApi();
+    public void run(RestTemplate restTemplate) {
+        TelegramApi telegram = new TelegramApi(restTemplate);
         String responseString = telegram.getUpdates();
 
         /**

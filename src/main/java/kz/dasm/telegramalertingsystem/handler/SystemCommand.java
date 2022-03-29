@@ -12,9 +12,41 @@ import java.util.logging.Logger;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.web.client.RestTemplate;
+
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+import java.net.Proxy.Type;
+
 public class SystemCommand {
     //Logger
     private static Logger log = Logger.getLogger(SystemCommand.class.getName());
+
+    @Value("${proxy.host}")
+    String PROXY_SERVER_HOST;
+
+    @Value("${proxy.port}")
+    int PROXY_SERVER_PORT;
+
+    @Value("${proxy.user}")
+    String PROXY_SERVER_USER;
+
+    @Value("${proxy.pass}")
+    String PROXY_SERVER_PASS;
+
+    private RestTemplate getRequestFactory() {
+
+        if (!PROXY_SERVER_HOST.isEmpty()) {
+            Proxy proxy = new Proxy(Type.HTTP, new InetSocketAddress(PROXY_SERVER_HOST, PROXY_SERVER_PORT));
+            SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+            requestFactory.setProxy(proxy);
+            return new RestTemplate(requestFactory);
+        } else {
+            return new RestTemplate();
+        }
+    }
 
     private int getRandCode() {
         int randomNum = (ThreadLocalRandom.current().nextInt(3, 8 + 1)) * 1000;
@@ -110,7 +142,7 @@ public class SystemCommand {
         DataBase db = new DataBase();
 
         long chat_id = resp.getResult()[index].getMessage().getChat().getId();
-        TelegramApi telegramAPI = new TelegramApi();
+        TelegramApi telegramAPI = new TelegramApi(getRequestFactory());
         this.updateChatTitles(resp, index);
         log.info(getCommand(text));
         if (getCommand(text).equalsIgnoreCase("/email")) {
