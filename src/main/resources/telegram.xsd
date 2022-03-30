@@ -1,16 +1,11 @@
-<xs:schema 
-    xmlns:tns="http://telegramalertingsystem.dasm.kz/" 
-    xmlns:xs="http://www.w3.org/2001/XMLSchema" 
-    version="1.0" 
-    targetNamespace="http://telegramalertingsystem.dasm.kz/">
-
-    <xs:element name="SendMessageRequest" type="tns:SendMessageRequest" />
+<xs:schema xmlns:tns="http://sender.sever.telegram.crm.dar.kaspi.kz/" xmlns:xs="http://www.w3.org/2001/XMLSchema" version="1.0" targetNamespace="http://sender.sever.telegram.crm.dar.kaspi.kz/">
+    <xs:element name="SendMessage" type="tns:SendMessage" />
     <xs:element name="SendMessageResponse" type="tns:SendMessageResponse" />
-    <xs:element name="SendPhotoRequest" type="tns:SendPhotoRequest" />
+    <xs:element name="SendPhoto" type="tns:SendPhoto" />
     <xs:element name="SendPhotoResponse" type="tns:SendPhotoResponse" />
-    <xs:element name="SendStickerRequest" type="tns:SendStickerRequest" />
+    <xs:element name="SendSticker" type="tns:SendSticker" />
     <xs:element name="SendStickerResponse" type="tns:SendStickerResponse" />
-    <xs:complexType name="SendPhotoRequest">
+    <xs:complexType name="SendPhoto">
         <xs:sequence>
             <xs:element name="event_name" type="xs:string" minOccurs="0" />
             <xs:element name="photo" type="xs:string" minOccurs="0" />
@@ -23,7 +18,7 @@
             <xs:element name="return" type="xs:string" minOccurs="0" />
         </xs:sequence>
     </xs:complexType>
-    <xs:complexType name="SendMessageRequest">
+    <xs:complexType name="SendMessage">
         <xs:sequence>
             <xs:element name="event_name" type="xs:string" minOccurs="0" />
             <xs:element name="message" type="xs:string" minOccurs="0" />
@@ -35,7 +30,7 @@
             <xs:element name="return" type="xs:string" minOccurs="0" />
         </xs:sequence>
     </xs:complexType>
-    <xs:complexType name="SendStickerRequest">
+    <xs:complexType name="SendSticker">
         <xs:sequence>
             <xs:element name="event_name" type="xs:string" minOccurs="0" />
             <xs:element name="sticker" type="xs:string" minOccurs="0" />

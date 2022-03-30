@@ -28,9 +28,6 @@ import java.util.logging.Logger;
 public class TelegramApi {
     // Logger
     private static Logger log = Logger.getLogger(TelegramApi.class.getName());
-    // private static final String PROXY_HOST = "proxy-all"; // прокся для
-    // корпоративщиков
-    // private static final int PROXY_PORT = 8000; // порт прокси для
     // корпоративщиков
     private static final String TELEGRAM_API_HOSTNAME = "https://api.telegram.org/bot";
     /*------------------------------------------------------------------------------------------*
@@ -46,8 +43,6 @@ public class TelegramApi {
     private static final String SEND_MESSAGE = "sendMessage";
     private static final String SEND_STICKER = "sendSticker";
 
-    // private static final Proxy PROXY = new Proxy(Proxy.Type.HTTP, new
-    // InetSocketAddress(PROXY_HOST, PROXY_PORT));
     private static final String GRAFANA_TOKEN = "GRAFANA_TOKEN";
     private static final String AUTH_TYPE = "Bearer ";
     private static final String SEND_PHOTO = "sendPhoto";

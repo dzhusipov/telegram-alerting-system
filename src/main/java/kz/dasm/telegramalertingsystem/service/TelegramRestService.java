@@ -33,7 +33,7 @@ public class TelegramRestService {
 
     private RestTemplate getRequestFactory() {
 
-        if (!PROXY_SERVER_HOST.isEmpty()) {
+        if (!PROXY_SERVER_HOST.isEmpty() || !PROXY_SERVER_HOST.equalsIgnoreCase("none")) {
             Proxy proxy = new Proxy(Type.HTTP, new InetSocketAddress(PROXY_SERVER_HOST, PROXY_SERVER_PORT));
             SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
             requestFactory.setProxy(proxy);
