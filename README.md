@@ -4,12 +4,12 @@
 
 To run application you can
 ```sh
- ./gradlew bootRun
+./gradlew clean && ./gradlew bootRun
 ```
-To build jar you can run
 
+To build jar and run it you need to  type
 ```sh
- ./gradlew bootJar
+gradlew.bat clean && gradlew.bat build && java -jar build/libs/telegram-alerting-system-0.1.0.jar
 ```
 
 this proxies if you need to use them. Just run with
@@ -41,5 +41,7 @@ http://localhost:8080/ws/telegramAlertingSystem.wsdl
 
 
 gradlew.bat clean && gradlew.bat build && java -jar build/libs/telegram-alerting-system-0.1.0.jar
+
+
 
 ./gradlew bootRun --args='--spring.profiles.active=dev'

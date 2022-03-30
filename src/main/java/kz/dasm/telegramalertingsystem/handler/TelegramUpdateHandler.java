@@ -28,14 +28,14 @@ public class TelegramUpdateHandler {
 
     @Scheduled(fixedRate = 3000)
     public void TelegramUpdateHandlerTimer() {
-        log.info("Telegram get update started ...");
+        //log.info("Telegram get update started ...");
         TelegramGetter serverGetter = new TelegramGetter();
         serverGetter.run(getRequestFactory());
     }
 
     private RestTemplate getRequestFactory() {
 
-        if (!PROXY_SERVER_HOST.isEmpty() || !PROXY_SERVER_HOST.equalsIgnoreCase("none")) {
+        if (!PROXY_SERVER_HOST.isEmpty() && !PROXY_SERVER_HOST.equalsIgnoreCase("none")) {
             Proxy proxy = new Proxy(Type.HTTP, new InetSocketAddress(PROXY_SERVER_HOST, PROXY_SERVER_PORT));
             SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
             requestFactory.setProxy(proxy);
