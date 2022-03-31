@@ -41,7 +41,7 @@ public class TelegramApi {
 
     private static final String GET_UPDATES = "getUpdates";
     private static final String SEND_MESSAGE = "sendMessage";
-    private static final String SEND_STICKER = "sendSticker";
+    //private static final String SEND_STICKER = "sendSticker";
 
     private static final String GRAFANA_TOKEN = "GRAFANA_TOKEN";
     private static final String AUTH_TYPE = "Bearer ";
