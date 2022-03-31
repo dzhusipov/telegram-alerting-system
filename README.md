@@ -16,6 +16,13 @@ this proxies if you need to use them. Just run with
 ```
 java -jar build/libs/telegram-alerting-system-0.0.1-SNAPSHOT.jar  
 ```
+## What a hell this for?
+You can create telegram groups and add bot to group.  
+Then you need to subscribe to events.  
+For example, you need to get all of zabbix error messages.  
+You simply creating event named as you want such as "zabbix".  
+Then, you alerting to telegram via SOAP or REST with 2 params - event name and message.  
+All who was subscribed to event will get message. Message can get in telegram group or directly from bot.
 
 ## Proxy settings
 -Dhttp.proxyHost=webcache.mydomain.com  
