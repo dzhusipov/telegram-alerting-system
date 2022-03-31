@@ -225,10 +225,7 @@ public class TelegramApi {
          * URLConnection connection = null;
          * HttpURLConnection httpConn = null;
          * 
-         * ByteArrayOutputStream bout = null;
-         * OutputStream out = null;
-         * String output = null;
-         * BufferedReader bufferReader;
+         * BytZ
          * StringBuilder sb = new StringBuilder();
          * bout = new ByteArrayOutputStream();
          * 
