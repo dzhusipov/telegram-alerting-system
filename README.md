@@ -25,11 +25,15 @@ Then, you alerting to telegram via SOAP or REST with 2 params - event name and m
 All who was subscribed to event will get message. Message can get in telegram group or directly from bot.
 
 ## Proxy settings
--Dhttp.proxyHost=webcache.mydomain.com  
--Dhttp.proxyPort=8080  
--Dhttp.noProxyHosts=”localhost|host.mydomain.com” GetURL  
--Dhttp.proxyUser=USERNAME  
--Dhttp.proxyPassword=PASSWORD  
+You need to create new application.properties file or write in default 
+```
+### Proxy settings ###
+proxy.host = none | proxy.com
+proxy.port = 0 | 80 | 8080
+
+# Logging settings
+logging.level.web = INFO | DEBUG
+```
 
 ## HowTo
 - Создаем канал в телеграме
