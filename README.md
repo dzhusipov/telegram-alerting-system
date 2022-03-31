@@ -25,8 +25,8 @@ All who was subscribed to event will get message. Message can get in telegram gr
 http://localhost:8080/ws/telegramAlertingSystem.wsdl
 
 ## REST endpoints
-http://localhost:8080/telegram/send-message-to-event/{event_name}/{event_message}
-http://localhost:8080/telegram/send-message-to-chat/{chat_id}/{text}
+http://localhost:8080/telegram/send-message-to-event/{event_name}/{event_message}  
+http://localhost:8080/telegram/send-message-to-chat/{chat_id}/{text}  
 
 ## Proxy settings
 You need to create new application.properties file or write in default 
